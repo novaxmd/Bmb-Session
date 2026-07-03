@@ -2,14 +2,20 @@
 
 
 
-.....
+```
 
 Bmb Tech project 
 
-bmbtech.zone.id
+https://bmbtech.zone.id
 
 
-.....
+``
+
+```
 
 Bmb Cdn Url
 
+https://url.bmbxmd.workers.dev/
+
+
+```
