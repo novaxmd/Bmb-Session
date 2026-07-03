@@ -1,67 +1,184 @@
-const PastebinAPI = require('pastebin-js'),
-pastebin = new PastebinAPI('EMWTMkQAVfJa9kM-MRUrxd5Oku1U7pgL')
-const {makeid} = require('./id');
 const express = require('express');
 const fs = require('fs');
-let router = express.Router()
-const pino = require("pino");
+const path = require('path');
+const pino = require('pino');
+const { makeid } = require('./id');
+
 const {
-    default: Bmb_Tech,
-    useMultiFileAuthState,
-    delay,
-    makeCacheableSignalKeyStore,
-    Browsers
-} = require("@whiskeysockets/baileys");
+  default: Toxic_Tech,
+  useMultiFileAuthState,
+  delay,
+  makeCacheableSignalKeyStore,
+  Browsers,
+  generateWAMessageFromContent,
+  proto,
+} = require('@whiskeysockets/baileys');
 
-function removeFile(FilePath){
-    if(!fs.existsSync(FilePath)) return false;
-    fs.rmSync(FilePath, { recursive: true, force: true })
- };
+const router = express.Router();
+const sessionDir = path.join(__dirname, "temp");
+
+function removeFile(filePath) {
+  if (fs.existsSync(filePath)) fs.rmSync(filePath, { recursive: true, force: true });
+}
+
 router.get('/', async (req, res) => {
-    const id = makeid();
-    let num = req.query.number;
-        async function BMB_TECH_PAIR_CODE() {
-        const {
-            state,
-            saveCreds
-        } = await useMultiFileAuthState('./temp/'+id)
-     try {
-            let Pair_Code_By_Bmb_Tech = Bmb_Tech({
-                auth: {
-                    creds: state.creds,
-                    keys: makeCacheableSignalKeyStore(state.keys, pino({level: "fatal"}).child({level: "fatal"})),
-                },
-                printQRInTerminal: false,
-                logger: pino({ level: "fatal" }).child({ level: "fatal" }),
-                browser: Browsers.macOS('Chrome')
-             });
-             if(!Pair_Code_By_Bmb_Tech.authState.creds.registered) {
-                await delay(1500);
-                        num = num.replace(/[^0-9]/g,'');
-                            const code = await Pair_Code_By_Bmb_Tech.requestPairingCode(num)
-                 if(!res.headersSent){
-                 await res.send({code});
-                     }
-                 }
-            Pair_Code_By_Bmb_Tech.ev.on('creds.update', saveCreds)
-            Pair_Code_By_Bmb_Tech.ev.on("connection.update", async (s) => {
-                const {
-                    connection,
-                    lastDisconnect
-                } = s;
-                if (connection == "open") {
-                await delay(50000);
-                let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                await delay(8000);
-               let b64data = Buffer.from(data).toString('base64');
-               let session = await Pair_Code_By_Bmb_Tech.sendMessage(Pair_Code_By_Bmb_Tech.user.id, { text: ' '+ b64data });
+  const id = makeid();
+  const num = (req.query.number || '').replace(/[^0-9]/g, '');
+  const tempDir = path.join(sessionDir, id);
+  let responseSent = false;
+  let sessionCleanedUp = false;
+  let sessionSent = false;
+  let currentSock = null;
 
-               let BMB_TECH_TEXT = `
+  if (!num || num.length < 7) {
+    return res.status(400).json({ code: 'Please provide a valid phone number.' });
+  }
 
+  async function cleanUpSession() {
+    if (!sessionCleanedUp) {
+      try { removeFile(tempDir); } catch (e) { console.error("Cleanup error:", e); }
+      sessionCleanedUp = true;
+    }
+    if (currentSock?.ws) {
+      try { currentSock.ws.close(); } catch {}
+    }
+  }
 
+  async function startPairing() {
+    try {
+      let version;
+      try {
+        version = (await (await fetch('https://raw.githubusercontent.com/WhiskeySockets/Baileys/master/src/Defaults/baileys-version.json')).json()).version;
+        if (!Array.isArray(version) || version.length < 3) throw new Error('bad version');
+      } catch {
+        version = [2, 3000, 1015901307];
+        console.log('⚠️ Version fetch failed...using fallback:', version.join('.'));
+      }
 
+      const { state, saveCreds } = await useMultiFileAuthState(tempDir);
 
-*🎉 SESSION GENERATED SUCCESSFULLY! ✅*
+      const sock = Toxic_Tech({
+        version,
+        logger: pino({ level: 'silent' }),
+        printQRInTerminal: false,
+        auth: {
+          creds: state.creds,
+          keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'silent' }))
+        },
+        browser: Browsers.macOS("Chrome"),
+        syncFullHistory: false,
+        generateHighQualityLinkPreview: true,
+        shouldIgnoreJid: jid => !!jid?.endsWith('@g.us'),
+        getMessage: async () => undefined,
+        markOnlineOnConnect: true,
+        connectTimeoutMs: 120000,
+        keepAliveIntervalMs: 30000,
+        emitOwnEvents: true,
+        fireInitQueries: true,
+        defaultQueryTimeoutMs: 60000,
+        retryRequestDelayMs: 2000,
+        transactionOpts: {
+          maxCommitRetries: 10,
+          delayBetweenTriesMs: 3000
+        }
+      });
+
+      currentSock = sock;
+
+      if (!state.creds.registered) {
+        await delay(3000);
+        const code = await sock.requestPairingCode(num);
+        if (!responseSent && !res.headersSent) {
+          res.json({ code });
+          responseSent = true;
+        }
+      }
+
+      sock.ev.on('creds.update', saveCreds);
+
+      sock.ev.on('connection.update', async (update) => {
+        const { connection, lastDisconnect } = update;
+
+        if (connection === 'open') {
+          sessionSent = true;
+          console.log('✔️ Bmb Tech successfully connected to WhatsApp.');
+
+          try { await sock.newsletterFollow('120363382023564830@newsletter'); } catch {}
+
+          const userJid = sock.user.id.includes(':')
+            ? sock.user.id.split(':')[0] + '@s.whatsapp.net'
+            : sock.user.id;
+
+          try {
+            await sock.sendMessage(userJid, {
+              text: `│❒ Hello! 👋 Session load waiting....👇❒│`
+            });
+          } catch {}
+
+          await delay(5000);
+          await saveCreds();
+          await delay(2000);
+
+          const credsPath = path.join(tempDir, "creds.json");
+          let sessionData = null;
+          let attempts = 0;
+          const maxAttempts = 10;
+
+          while (attempts < maxAttempts && !sessionData) {
+            try {
+              if (fs.existsSync(credsPath)) {
+                const data = fs.readFileSync(credsPath);
+                if (data && data.length > 100) {
+                  sessionData = data;
+                  console.log(`✅ Session data found (${data.length} bytes) on attempt ${attempts + 1}`);
+                  break;
+                } else {
+                  console.log(`⚠️ Session file too small: ${data?.length || 0} bytes`);
+                }
+              } else {
+                console.log(`⚠️ Session file not found yet, attempt \( {attempts + 1}/ \){maxAttempts}`);
+              }
+              await delay(3000);
+              attempts++;
+            } catch (readError) {
+              console.error("Read attempt error:", readError);
+              await delay(3000);
+              attempts++;
+            }
+          }
+
+          if (!sessionData) {
+            console.error("Failed to read session data after all attempts");
+            try { await sock.sendMessage(userJid, { text: "Failed to generate session. Please try again." }); } catch {}
+            await cleanUpSession();
+            return;
+          }
+
+          const base64 = Buffer.from(sessionData).toString('base64');
+
+          try {
+            console.log('📤 Sending session data to user...');
+            const sessionMsg = await generateWAMessageFromContent(userJid, proto.Message.fromObject({
+                interactiveMessage: {
+                    body: { text: base64 },
+                    footer: { text: '' },
+                    nativeFlowMessage: {
+                        messageVersion: 1,
+                        buttons: [{
+                            name: 'cta_copy',
+                            buttonParamsJson: JSON.stringify({ display_text: 'Copy Session id', copy_code: base64 })
+                        }],
+                        messageParamsJson: ''
+                    }
+                }
+            }), { userJid: sock.user.id });
+
+            const sentSession = await sock.relayMessage(userJid, sessionMsg.message, { messageId: sessionMsg.key.id });
+
+            await delay(3000);
+
+            await sock.sendMessage(userJid, {
+              text: `*🎉 SESSION GENERATED SUCCESSFULLY! ✅*
 
 *💪 Empowering Your Experience with bmb tech Bot*
 
@@ -69,37 +186,63 @@ router.get('/', async (req, res) => {
 🖇️ https://chat.whatsapp.com/BKoqNbYGCkK5apBNP0nzI3
 
 *🌟 Show your support by giving our repo a star! 🌟*
-🔗 https://github.com/Dev-bmbtech/BMB-XMD
+🔗 https://github.com/Dev-bmbtech/BMB-TECH
 
 *💭 Need help? Join our support channel:*
 📢 💬
 https://whatsapp.com/channel/0029VawO6hgF6sn7k3SuVU3z
 
 *📚 Learn & Explore More with Tutorials:*
-🪄 YouTube Channel https://www.youtube.com/@bmb-xmd
+🪄 Bmb Tech Website https://bmbtech.zone.id
 
 *🥀 Powered by dev bmb Bot & bmb tech Inc 🥀*
-*Together, we build the future of automation! 🚀*
-`
- await Pair_Code_By_Bmb_Tech.sendMessage(Pair_Code_By_Bmb_Tech.user.id,{text:BMB_TECH_TEXT},{quoted:session})
- 
+*Together, we build the future of automation! 🚀*`
+            }, { quoted: sentSession });
 
-        await delay(100);
-        await Pair_Code_By_Bmb_Tech.ws.close();
-        return await removeFile('./temp/'+id);
-            } else if (connection === "close" && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
-                    await delay(10000);
-                    BMB_TECH_PAIR_CODE();
-                }
-            });
-        } catch (err) {
-            console.log("service restated");
-            await removeFile('./temp/'+id);
-         if(!res.headersSent){
-            await res.send({code:"Service is Currently Unavailable"});
-         }
+            await delay(5000);
+            await cleanUpSession();
+          } catch (sendError) {
+            console.error("Error sending session:", sendError);
+            await cleanUpSession();
+          }
+
+        } else if (connection === 'close') {
+          if (sessionSent) return;
+          const statusCode = lastDisconnect?.error?.output?.statusCode;
+          if (statusCode === 401) {
+            console.log('❌ Connection closed permanently (logged out)');
+            await cleanUpSession();
+          } else {
+            console.log('⚠️ Connection closed, reconnecting...');
+            await delay(3000);
+            await startPairing();
+          }
         }
+      });
+
+    } catch (err) {
+      console.error('❌ Error during pairing:', err);
+      await cleanUpSession();
+      if (!responseSent && !res.headersSent) {
+        res.status(500).json({ code: 'Service Unavailable. Please try again.' });
+        responseSent = true;
+      }
     }
-    return await BMB_TECH_PAIR_CODE()
+  }
+
+  const timeoutPromise = new Promise((_, reject) => {
+    setTimeout(() => reject(new Error("Pairing process timeout")), 420000);
+  });
+
+  try {
+    await Promise.race([startPairing(), timeoutPromise]);
+  } catch (finalError) {
+    console.error("Final error:", finalError);
+    await cleanUpSession();
+    if (!responseSent && !res.headersSent) {
+      res.status(500).json({ code: "Service Error - Timeout" });
+    }
+  }
 });
-module.exports = router
+
+module.exports = router;
