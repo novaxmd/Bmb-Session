@@ -4,18 +4,18 @@
 
 
 
-Bmb Tech project
+# Bmb Tech project
 
 ```
 https://bmbtech.zone.id
 
-```
+``
 
-```
 
-Bmb Cdn Url
+
+# Bmb Cdn Url
 
 ```
 https://url.bmbxmd.workers.dev/
 
-```
+``
