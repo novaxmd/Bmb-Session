@@ -2,6 +2,8 @@
 
 ---
 
+![Logo](./temp/bmb.png)
+
 Bmb Tech Project
 
 ```
