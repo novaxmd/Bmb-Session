@@ -9,7 +9,7 @@ const express = require('express');
   app.use('/qr/code', server);
   app.use('/code', code);
   app.use('/qr', async (req, res, next) => {
-  res.sendFile(__path + '/qr.html')
+  res.sendFile(__path + '/qr_page.html')
   })
   app.use('/pair', async (req, res, next) => {
   res.sendFile(__path + '/pair.html')
