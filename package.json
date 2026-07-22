@@ -1,25 +1,26 @@
 {
-  "description": "Bmb Tech Session Id",
-  "main": "./bmb.js",
-  "engines": {
-    "npm": ">=9.7.2",
-    "node": ">=20.0.0"
+    "description": "Bmb Tech Session",
+    "main": "./index.js",
+  "engines" : { 
+    "npm" : ">=9.7.2",
+    "node" : ">=20.0.0"
+    },
+    "scripts": {
+    "start": "node index.js"
   },
-  "scripts": {
-    "start": "node bmb.js"
-  },
-  "author": "bmbtech",
-  "license": "GPL-3.0",
+  "author": "Bmb Tech",
+  "license": "GPL-3.0 license",
   "dependencies": {
-    "@whiskeysockets/baileys": "github:xhclintohn/Baileys#beta-test",
-    "qrcode": "^1.5.4",
-    "awesome-phonenumber": "^7.8.0",
-    "pino": "^10.1.0",
-    "phone": "3.1.30",
-    "jimp": "^1.6.0",
-    "lodash": "^4.17.21",
-    "body-parser": "^2.2.2",
-    "express": "^5.1.0",
-    "pastebin-js": "latest"
-  }
+    "@whiskeysockets/baileys": "npm:wileys",
+    "maher-zubair-baileys": "^6.6.5",
+    "qrcode": "^1.5.3",
+    "awesome-phonenumber": "^2.64.0",
+    "pino": "^8.1.0",
+    "phone" : "3.1.30",
+    "body-parser": "^1.20.1",
+    "jimp": "latest",
+    "pastebin-js": "^1.0.6",
+    "express": "^4.18.1",
+    "path": "^0.12.7"
+   }
 }
