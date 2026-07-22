@@ -2,157 +2,339 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>B.M.B-TECH PAIR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nova-Xmd | LINK DEVICE</title>
+  <meta name="description" content="Secure WhatsApp pairing powered by Nova-Xmd">
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Exo+2:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
   <style>
-    /* (====== CSS yako ile ile nimeiacha bila kubadilisha ======) */
-    * {box-sizing: border-box;margin: 0;padding: 0;}
+    :root {
+      --cyber-cyan: #00f0ff;
+      --cyber-blue: #0066ff;
+      --dark-bg: #030712;
+      --card-bg: rgba(6, 11, 25, 0.75);
+      --border-color: rgba(0, 240, 255, 0.25);
+      --input-bg: #040914;
+      --text-main: #e2e8f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      background: linear-gradient(135deg, #0f0f0f, #1a1a1a, #000000);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--dark-bg);
+      background-image: 
+        linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: center;
+      color: var(--text-main);
+      font-family: 'Exo 2', sans-serif;
       min-height: 100vh;
-      color: white;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 460px;
+      padding: 40px 30px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 40px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(0, 240, 255, 0.05);
+      text-align: center;
+    }
+
+    .icon-container {
+      width: 85px;
+      height: 85px;
+      margin: 0 auto 20px;
+      background: #021224;
+      border: 2px solid var(--cyber-cyan);
+      border-radius: 26px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      position: relative;
-      overflow-x: hidden;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+      overflow: hidden;
     }
-    .background-effects {position: fixed;top: 0; left: 0; width: 100%; height: 100%;z-index: -1;pointer-events: none;}
-    .shape {position: absolute;background: rgba(0, 255, 153, 0.05);border: 1px solid rgba(0, 255, 153, 0.1);animation: roam 25s infinite ease-in-out;will-change: transform;}
-    .square { width: 60px; height: 60px; }
-    .circle { width: 50px; height: 50px; border-radius: 50%; }
-    .triangle {width: 0; height: 0;border-left: 30px solid transparent;border-right: 30px solid transparent;border-bottom: 50px solid rgba(0,255,153,0.05);}
-    .shape:nth-child(1) { top: 10%; left: 5%; animation-duration: 20s; }
-    .shape:nth-child(2) { top: 50%; left: 20%; animation-duration: 25s; }
-    .shape:nth-child(3) { top: 30%; left: 60%; animation-duration: 22s; }
-    .shape:nth-child(4) { top: 70%; left: 40%; animation-duration: 28s; }
-    @keyframes roam {0% { transform: translate(0, 0) rotate(0deg); }25% { transform: translate(30vw, 20vh) rotate(90deg); }50% { transform: translate(-25vw, -25vh) rotate(180deg); }75% { transform: translate(20vw, 30vh) rotate(270deg); }100% { transform: translate(0, 0) rotate(360deg); }}
-    .star {position: absolute;background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 10%, rgba(0, 255, 153, 0.2) 50%, transparent 70%);border-radius: 50%;animation: twinkle 4s infinite ease-in-out;will-change: opacity, transform;}
-    .star:nth-child(5) { top: 15%; left: 25%; width: 3px; height: 3px; animation-delay: 0s; }
-    .star:nth-child(6) { top: 55%; left: 45%; width: 2px; height: 2px; animation-delay: 1s; }
-    .star:nth-child(7) { top: 75%; left: 65%; width: 4px; height: 4px; animation-delay: 0.5s; }
-    .star:nth-child(8) { top: 25%; left: 85%; width: 2px; height: 2px; animation-delay: 2s; }
-    @keyframes twinkle {0% { opacity: 0.4; transform: scale(0.8); }50% { opacity: 1; transform: scale(1.1); }100% { opacity: 0.4; transform: scale(0.8); }}
-    .container {background: #111;padding: 40px 30px 30px 30px;border-radius: 20px;box-shadow: 0 0 30px rgba(0,255,0,0.15), inset 0 0 10px rgba(0,255,0,0.05);border: 1.5px solid #00ff9d;width: 100%;max-width: 400px;text-align: center;position: relative;z-index: 1;animation: fadeIn 1s ease forwards;}
-    h1 {font-weight: 900;font-size: 2.5rem;color: #00ff9d;margin-bottom: 25px;letter-spacing: 3px;text-shadow: 0 0 10px #00ff9d;}
-    h3 {color: #00ff9d;font-size: 1.5rem;margin-bottom: 5px;}
-    h6 {font-weight: 400;color: #ccc;font-size: 1rem;margin-bottom: 25px;}
-    .input-container {display: flex;flex-direction: column;gap: 18px;margin-bottom: 15px;}
-    input {background: #1d1d1d;border: none;border-radius: 12px;padding: 14px 20px;font-size: 1.1rem;color: white;box-shadow: inset 2px 2px 10px #000, inset -2px -2px 8px #1a1a1a;outline: none;transition: box-shadow 0.3s ease;}
-    input:focus {box-shadow: 0 0 10px #00ff9d;}
-    button {background: #00ff9d;border: none;border-radius: 12px;padding: 15px;font-size: 1.2rem;font-weight: 700;color: black;cursor: pointer;transition: background-color 0.3s ease, transform 0.2s ease;opacity: 1;visibility: visible;box-shadow: 0 0 12px #00ff9d;}
-    button:hover {background-color: #00cc7a;transform: scale(1.05);}
-    #pair {margin-top: 25px;font-size: 1.2rem;font-weight: 700;color: #00ff9d;text-shadow: 0 0 10px #00ff9d;user-select: text;min-height: 32px;word-break: break-word;transition: color 0.3s ease;}
-    #copyButton {margin-top: 15px;background: #121212;border: 1.5px dashed #00ff9d;border-radius: 12px;padding: 10px 20px;color: #00ff9d;font-weight: 700;cursor: pointer;box-shadow: 0 0 8px #00ff9d;transition: background-color 0.3s ease;display: none;user-select: none;}
-    #copyButton:hover {background-color: #252525;}
-    .powered-by {margin-top: 30px;color: #00ff9d;font-weight: 600;font-size: 0.95rem;opacity: 0.7;letter-spacing: 1px;cursor: default;user-select: none;text-shadow: 0 0 5px rgba(0, 255, 153, 0.4);transition: opacity 0.3s ease;}
-    .powered-by:hover {opacity: 1;}
-    #loading-spinner {display: none;justify-content: center;margin-top: 15px;}
-    .loader {display: flex;gap: 6px;}
-    .loader div {width: 12px;height: 12px;background-color: #00ff9d;border-radius: 50%;animation: bounce 0.6s infinite alternate;}
-    .loader div:nth-child(2) {animation-delay: 0.2s;}
-    .loader div:nth-child(3) {animation-delay: 0.4s;}
-    @keyframes bounce {to {opacity: 0.3;transform: translateY(-10px);}}
-    @keyframes fadeIn {from { opacity: 0; transform: translateY(20px);}to { opacity: 1; transform: translateY(0);}}
-    @media (max-width: 480px) {.container {padding: 30px 20px 25px 20px;}h1 {font-size: 2rem;}button {font-size: 1rem;}}
+
+    .icon-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .protocol-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 240, 255, 0.08);
+      border: 1px solid var(--cyber-cyan);
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--cyber-cyan);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .description {
+      font-size: 13px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 30px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .input-label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 11px;
+      color: var(--cyber-cyan);
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .input-label i {
+      margin-right: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 16px 20px;
+      background: var(--input-bg);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 50px;
+      color: #ffffff;
+      font-size: 15px;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--cyber-cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.15);
+    }
+
+    .input-field::placeholder {
+      color: rgba(0, 240, 255, 0.25);
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: 50px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    .generate-btn {
+      background: transparent;
+      border: 1px solid var(--cyber-cyan);
+      color: var(--cyber-cyan);
+    }
+
+    .generate-btn:hover {
+      background: rgba(0, 240, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+
+    .code-display {
+      width: 100%;
+      padding: 18px;
+      background: #020612;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 50px;
+      text-align: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 14px;
+      color: var(--cyber-cyan);
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+    }
+
+    .copy-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      display: none; 
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    .copy-btn.show {
+      display: flex;
+      animation: fadeInUp 0.4s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .copy-btn:hover {
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+
+    .card-footer {
+      margin-top: 30px;
+      font-size: 11px;
+      color: rgba(148, 163, 184, 0.4);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-top: 1px dashed rgba(255,255,255,0.05);
+      padding-top: 20px;
+    }
   </style>
 </head>
+
 <body>
-  <div class="background-effects" aria-hidden="true">
-    <div class="shape square"></div><div class="shape circle"></div><div class="shape triangle"></div><div class="shape square"></div>
-    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+
+<div class="container">
+  <div class="icon-container">
+    <img src="https://url.bmbxmd.workers.dev/N0PJHH.jpg" alt="Nova-Xmd Icon">
   </div>
 
-  <main class="container" role="main">
-    <h1>B.M.B-TECH PAIR</h1>
-    <h3>Link with Phone Number</h3>
-    <h6>Enter your number with country code</h6>
+  <h1 class="title">NOVA-XMD</h1>
+  
+  <div class="protocol-badge">
+    <i class="fas fa-shield-alt"></i> Pair Code Site
+  </div>
+  
+  <p class="description">
+    <i class="fas fa-sync-alt fa-spin" style="font-size: 11px; margin-right: 4px; color: var(--cyber-cyan);"></i> 
+    End-to-end encrypted handshake · Generate pairing code for WhatsApp Bot
+  </p>
 
-    <form id="pairForm" class="input-container" novalidate>
-      <input
-        id="phoneInput"
-        type="tel"
-        placeholder="+2557678"
-        aria-label="Phone number input"
-        required
-        pattern="^\+?\d{7,15}$"
-        title="Enter phone number with country code, e.g., +2557678 or 2557678"
-      />
-      <button type="submit" id="submitBtn">Get Pairing Code</button>
-    </form>
+  <div class="form-group">
+    <label class="input-label">
+      <i class="fas fa-mobile-alt"></i> WHATSAPP NUMBER (WITHOUT '+' )
+    </label>
+    <input type="tel" inputmode="numeric" autocomplete="tel" id="mobileNumber" class="input-field" placeholder="255XXXXXXXXX">
+  </div>
 
-    <div id="loading-spinner">
-      <div class="loader"><div></div><div></div><div></div></div>
-    </div>
+  <button class="action-btn generate-btn" id="submit">
+    <i class="fas fa-fingerprint"></i> Generate Pair Code
+  </button>
 
-    <div id="pair"></div>
-    <button id="copyButton">Copy Pairing Code</button>
-  </main>
+  <div class="code-display" id="codeDisplay">Awaiting Pair Request</div>
 
-  <div class="powered-by">Powered By Bmb Tech</div>
+  <button class="action-btn copy-btn" id="copy">
+    <i class="far fa-copy"></i> Copy Code
+  </button>
 
-  <script>
-    const form = document.getElementById('pairForm');
-    const phoneInput = document.getElementById('phoneInput');
-    const pairDiv = document.getElementById('pair');
-    const copyBtn = document.getElementById('copyButton');
-    const loadingSpinner = document.getElementById('loading-spinner');
+  <div class="card-footer">
+    <i class="fas fa-microchip"></i> Nova-Xmd • Powered by Bmb Tech
+  </div>
+</div>
 
-    form.addEventListener('submit', async e => {
-      e.preventDefault();
-      let phone = phoneInput.value.trim();
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
 
-      // Normalize: ensure it starts with +
-      if (!phone.startsWith('+')) {
-        phone = '+' + phone.replace(/^0+/, ''); // pia toa 0 mwanzoni
+<script>
+  let loadingInterval;
+
+  // Auto-fill phone number if saved previously in browser storage
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedNumber = localStorage.getItem('nova_saved_number');
+    if (savedNumber) {
+      document.getElementById('mobileNumber').value = savedNumber;
+    }
+  });
+
+  function startLoadingAnimation() {
+    const codeDisplay = document.getElementById('codeDisplay');
+    let dots = 0;
+    codeDisplay.textContent = 'Generating';
+    
+    loadingInterval = setInterval(() => {
+      dots = (dots + 1) % 4;
+      codeDisplay.textContent = 'Generating' + '.'.repeat(dots);
+    }, 400);
+  }
+
+  function stopLoadingAnimation() {
+    clearInterval(loadingInterval);
+  }
+
+  document.getElementById('submit').addEventListener('click', async () => {
+    const codeDisplay = document.getElementById('codeDisplay');
+    const copyBtn = document.getElementById('copy');
+    const numInput = document.getElementById('mobileNumber');
+    const num = numInput.value.trim();
+    
+    if (!num) {
+      codeDisplay.textContent = 'Enter a valid number';
+      copyBtn.classList.remove('show');
+      return;
+    }
+
+    // Save number inside local device history securely
+    localStorage.setItem('nova_saved_number', num);
+
+    copyBtn.classList.remove('show');
+    startLoadingAnimation();
+
+    try {
+      const res = await axios(`/code?number=${num.replace(/\D/g, '')}`);
+      stopLoadingAnimation();
+      
+      if (res.data && res.data.code) {
+        codeDisplay.textContent = res.data.code;
+        copyBtn.classList.add('show');
+      } else {
+        codeDisplay.textContent = 'Error generating key';
       }
+    } catch {
+      stopLoadingAnimation();
+      codeDisplay.textContent = 'Failed';
+    }
+  });
 
-      if (!phone.match(/^\+\d{7,15}$/)) {
-        pairDiv.textContent = 'Please enter a valid phone number with country code.';
-        copyBtn.style.display = 'none';
-        return;
-      }
+  document.getElementById('copy').addEventListener('click', () => {
+    const code = document.getElementById('codeDisplay').textContent.trim();
+    if (!code || code.includes('Awaiting') || code.includes('Generating')) return;
 
-      loadingSpinner.style.display = 'flex';
-      pairDiv.textContent = '';
-      copyBtn.style.display = 'none';
+    navigator.clipboard.writeText(code);
+  });
+</script>
 
-      try {
-        const response = await fetch(`/code?number=${encodeURIComponent(phone.replace(/\D/g, ''))}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-
-        const data = await response.json();
-        const pairingCode = data.code || 'Service Unavailable';
-
-        loadingSpinner.style.display = 'none';
-        pairDiv.textContent = pairingCode;
-        if (pairingCode !== 'Service Unavailable') {
-          copyBtn.style.display = 'inline-block';
-        } else {
-          copyBtn.style.display = 'none';
-        }
-      } catch (error) {
-        loadingSpinner.style.display = 'none';
-        pairDiv.textContent = 'Error fetching pairing code. Please try again later.';
-        copyBtn.style.display = 'none';
-        console.error('Fetch error:', error);
-      }
-    });
-
-    copyBtn.addEventListener('click', () => {
-      if (pairDiv.textContent) {
-        navigator.clipboard.writeText(pairDiv.textContent)
-          .then(() => {
-            const originalText = pairDiv.textContent;
-            pairDiv.textContent = originalText + "  ✔️ Done Copy";
-            setTimeout(() => { pairDiv.textContent = originalText; }, 2000);
-          })
-          .catch(() => { console.error('Failed to copy pairing code.'); });
-      }
-    });
-  </script>
 </body>
-</html>
+  </html>
