@@ -133,7 +133,7 @@ router.get('/', async (req, res) => {
 
                         try {
                             await sock.sendMessage(userJid, {
-                                text: `Hello! 👋 Session load waiting....🔃`
+                                text: `Hello! 👋 Bmb Session load waiting....`
                             });
                         } catch {}
 
